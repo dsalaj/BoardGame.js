@@ -1,0 +1,10 @@
+#div1 {float:left; width:18px; height:18px;padding:10px;border:1px solid #5C4310;}
+#div1[tile="g"] {background: url("tilea2.png") 0 0;}
+#div1[tile="p"] {background: url("tilea2.png") -155px 0;}
+#drag1 {width:18px; height:18px; background:#d88;}
+#drag2 {width:18px; height:18px; background:#88d;}
+body { display:flex; }
+#pfield { width:570px; order: 1; }
+#console { order: 2; overflow: scroll; width:400px; height: 500px;}
+#console span:nth-of-type(1) { background: #FFAD5C; }
+#console span { display: inline-block; width: 100%;}
