@@ -5,6 +5,35 @@
 #drag2 {width:18px; height:18px; background:#88d;}
 body { display:flex; }
 #pfield { width:570px; order: 1; }
-#console { order: 2; overflow: scroll; width:400px; height: 500px;}
+.right { display:flex; order:2; flex-direction: column;}
+#dice { display:flex; flex-direction: row; flex-wrap: wrap; order:1; width:400px;}
+#console { order: 2; overflow: scroll; width:400px; flex-grow: 6;}
 #console span:nth-of-type(1) { background: #FFAD5C; }
 #console span { display: inline-block; width: 100%;}
+.btn {
+  width: 75px;
+  color: #ffffff;
+  padding: 10px 20px 10px 20px;
+  border: dotted #000000 2px;
+}
+.roll_dice { text-align: center;}
+.btn[active="no"] { background: #bF2307;}
+.btn[active="yes"] { background: #00bA5A;}
+.btn:hover {
+  border: double #000000 2px;
+  text-decoration: overline underline;
+}
+.turn {
+  width: 100%;
+  height: 3em;
+  background: #ddd;
+  display: flex;
+}
+#dice span {
+  margin: auto;
+}
+.roll {
+  display: flex;
+  flex-grow: 4;
+  background: #eee;
+}
