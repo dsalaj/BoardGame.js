@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+#div1 {float:left; width:18px; height:18px;padding:10px;border:1px solid #5C4310;}
+#div1[tile="g"] {background: url("tilea2.png") 0 0;}
+#div1[tile="p"] {background: url("tilea2.png") -155px 0;}
+#drag1 {width:18px; height:18px; background:#d88;}
+#drag2 {width:18px; height:18px; background:#88d;}
+body { display:flex; }
+#pfield { width:570px; order: 1; }
+#console { order: 2; overflow: scroll; width:400px; height: 500px;}
+#console span:nth-of-type(1) { background: #FFAD5C; }
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+    var f = $('<div id="div1" tile="g" ondrop="drop(event)" ondragover="allowDrop(event)"></div>');
+    
+    for(i = 0; i < 14; i++) {
+        for(j = 0; j < 14; j++) {
+            $('#pfield').append(f.clone().attr("y",i).attr("x",j));
+        }
+    }
+
+    $("#div1[x='5']").attr("tile", "p");
+
+    var u1 = $('<div draggable="true" ondragstart="drag(event)" id="drag1"></div>');
+    var u2 = $('<div draggable="true" ondragstart="drag(event)" id="drag2"></div>');
+    $('#pfield').children('#div1').first().append(u1);
+    $('#pfield').children('#div1').last().prev().append(u2);
+    
+});
+
+</script>
+<script>
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+    var x = ev.target.attributes[5].nodeValue;
+    var y = ev.target.attributes[4].nodeValue;
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    if (x == 5) {
+      $('#console').prepend("<span>FORBIDDEN ROW 5</span></br>");
+    } else {
+      ev.target.appendChild(document.getElementById(data));
+      $('#console').prepend("<span>" + data + " moved to x:"+ x +" y:" + y + "</span></br>");
+    }
+}
+</script>
+</head>
+<body>
+  <div id="pfield"></div>
+  <div id="console">===CONSOLE===</br></div>
+<!--
+<script src="jquery-2.1.3.min.js"></script>
+-->
+</body>
+</html>
