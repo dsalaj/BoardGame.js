@@ -1,3 +1,5 @@
+
+// tag containing the playing field i.e. board
 var BOARD = '#pfield';
 
 $(document).ready(function(){
