@@ -32,24 +32,47 @@ function allowDrop(ev) {
     ev.preventDefault();
 }
 
+function reachableFrom(r, pos, steps) {
+  r.push(pos);
+  //console.log(pos.x);
+  var s = steps - 1;
+  if (s > 0){
+    p_r = {x: (pos.x+1), y: pos.y};
+    reachableFrom(r, p_r, s);
+    p_l = {x: (pos.x-1), y: pos.y};
+    reachableFrom(r, p_l, s);
+    p_u = {x: pos.x, y: (pos.y-1)};
+    reachableFrom(r, p_u, s);
+    p_d = {x: pos.x, y: (pos.y+1)};
+    reachableFrom(r, p_d, s);
+  }
+}
+
 function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
-    var x = $(ev.target).closest("#div1").attr("x");
-    var y = $(ev.target).closest("#div1").attr("y");
-    $('#console').prepend("<span> from x:"+ x +" y:" + y + "</span>");
+  console.log("start draging");
+  //if ($(ev.target).attr('id') == 'drag1') {
+  ev.dataTransfer.setData("text", ev.target.id);
+  var x_current = $(ev.target).closest("#div1").attr("x");
+  var y_current = $(ev.target).closest("#div1").attr("y");
+  $('#console').prepend("<span> from x:"+ x_current +" y:" + y_current + "</span>");
+  // Run the reach algorithm here and mark all reachable field
+  var r = [];
+  var pos = {x: parseInt(x_current), y: parseInt(y_current)};
+  reachableFrom(r, pos, 3);
+  console.log(r.length);
 }
 
 function drop(ev) {
-    var x = $(ev.target).attr("x");
-    var y = $(ev.target).attr("y");
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    if (x == 5) {
-      $('#console').prepend("<span>FORBIDDEN ROW 5</span></br>");
-    } else {
-      ev.target.appendChild(document.getElementById(data));
-      $('#console').prepend("<span>" + data + " moved to x:"+ x +" y:" + y + "</span>");
-    }
+  var x = $(ev.target).attr("x");
+  var y = $(ev.target).attr("y");
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  if (x == 5) {
+    $('#console').prepend("<span>FORBIDDEN ROW 5</span></br>");
+  } else {
+    ev.target.appendChild(document.getElementById(data));
+    $('#console').prepend("<span>" + data + " moved to x:"+ x +" y:" + y + "</span>");
+  }
 }
 
 $(document).ready(function(){
