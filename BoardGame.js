@@ -1,5 +1,4 @@
 
-// tag containing the playing field i.e. board
 var BOARD = '#pfield';
 
 $(document).ready(function(){
@@ -35,11 +34,14 @@ function allowDrop(ev) {
 
 function drag(ev) {
     ev.dataTransfer.setData("text", ev.target.id);
+    var x = $(ev.target).closest("#div1").attr("x");
+    var y = $(ev.target).closest("#div1").attr("y");
+    $('#console').prepend("<span> from x:"+ x +" y:" + y + "</span>");
 }
 
 function drop(ev) {
-    var x = ev.target.attributes[5].nodeValue;
-    var y = ev.target.attributes[4].nodeValue;
+    var x = $(ev.target).attr("x");
+    var y = $(ev.target).attr("y");
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     if (x == 5) {
