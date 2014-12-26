@@ -37,3 +37,9 @@ body { display:flex; }
   flex-grow: 4;
   background: #eee;
 }
+.active {
+  -webkit-box-shadow:inset 0px 0px 0px 5px #f00;
+  -moz-box-shadow:inset 0px 0px 0px 5px #f00;
+  box-shadow:inset 0px 0px 0px 5px #f00;
+}
+

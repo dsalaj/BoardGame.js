@@ -29,12 +29,13 @@ $(document).ready(function(){
 });
 
 function allowDrop(ev) {
-    ev.preventDefault();
+  ev.preventDefault();
 }
 
 function reachableFrom(r, pos, steps) {
-  r.push(pos);
-  //console.log(pos.x);
+  if (!posContains(r, pos)) {
+    r.push(pos);
+  }
   var s = steps - 1;
   if (s > 0){
     p_r = {x: (pos.x+1), y: pos.y};
@@ -48,18 +49,25 @@ function reachableFrom(r, pos, steps) {
   }
 }
 
+function mark(r, mark) {
+  for (var i = 0; i < r.length; i++) {
+    $( "div[x='"+r[i].x+"'][ y='"+r[i].y+"']" ).attr("class", mark);
+  }
+}
+
+var r = [];
+
 function drag(ev) {
   console.log("start draging");
-  //if ($(ev.target).attr('id') == 'drag1') {
   ev.dataTransfer.setData("text", ev.target.id);
   var x_current = $(ev.target).closest("#div1").attr("x");
   var y_current = $(ev.target).closest("#div1").attr("y");
   $('#console').prepend("<span> from x:"+ x_current +" y:" + y_current + "</span>");
   // Run the reach algorithm here and mark all reachable field
-  var r = [];
   var pos = {x: parseInt(x_current), y: parseInt(y_current)};
   reachableFrom(r, pos, 3);
-  console.log(r.length);
+  console.log(r);
+  mark(r, "active");
 }
 
 function drop(ev) {
@@ -73,6 +81,8 @@ function drop(ev) {
     ev.target.appendChild(document.getElementById(data));
     $('#console').prepend("<span>" + data + " moved to x:"+ x +" y:" + y + "</span>");
   }
+  mark(r, "");
+  r.length = 0; //clear out the reachable fields when move is finished
 }
 
 $(document).ready(function(){
@@ -88,3 +98,19 @@ function roll(sides) {
   with(Math) return 1 + floor(random() * sides); 
 }
 
+function posEqual(p1, p2) { 
+  if (p1.x == p2.x && p1.y == p2.y) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function posContains(r, p) {
+  for (var i = 0; i < r.length; i++) { 
+    if (posEqual(r[i], p)) {
+      return true;
+    }
+  }
+  return false;
+}
