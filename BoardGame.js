@@ -10,7 +10,16 @@ $(document).ready(function(){
       }
   }
 
-  $("#div1[x='5']").attr("tile", "p");
+  // test map
+  $("#div1[x='5'][y='0']").attr("tile", "p");
+  $("#div1[x='5'][y='1']").attr("tile", "p");
+  $("#div1[x='5'][y='2']").attr("tile", "p");
+  $("#div1[x='5'][y='0']").attr("tile", "p");
+  $("#div1[x='5'][y='4']").attr("tile", "p");
+  $("#div1[x='4'][y='4']").attr("tile", "p");
+  $("#div1[x='3'][y='4']").attr("tile", "p");
+  $("#div1[x='3'][y='5']").attr("tile", "p");
+  $("#div1[x='5'][y='5']").attr("tile", "p");
 
   var u1 = $('<div draggable="true" ondragstart="drag(event)" id="drag1"></div>');
   var u2 = $('<div draggable="true" ondragstart="drag(event)" id="drag2"></div>');
@@ -33,6 +42,7 @@ function allowDrop(ev) {
 }
 
 function reachableFrom(r, pos, steps) {
+  if (!($("div[x='"+pos.x+"'][ y='"+pos.y+"']").attr("tile")=="g")) return;
   if (!posContains(r, pos)) {
     r.push(pos);
   }

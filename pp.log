@@ -1,6 +1,11 @@
 TODO
 +listeners on fields
 +listeners + id
--dice throw sim
--reach algorithm (expand, mark, store for check)
++dice throw sim
++reach algorithm (expand, mark, store for check)
++reach with obstacle skip
+-don't waste move/steps if not possible to drop
+-externalize configuration (separate js file?)
+-basic player simulation / idea
+-map loading from file
 

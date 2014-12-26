@@ -1,2 +1,5 @@
 BoardGame.js
 ============
+
+=Dependencies
+-JQuery
