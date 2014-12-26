@@ -46,6 +46,15 @@ function reachableFrom(r, pos, steps) {
     reachableFrom(r, p_u, s);
     p_d = {x: pos.x, y: (pos.y+1)};
     reachableFrom(r, p_d, s);
+
+    //p_ru = {x: (pos.x+1), y: (pos.y-1)};
+    //reachableFrom(r, p_ru, s);
+    //p_lu = {x: (pos.x-1), y: (pos.y-1)};
+    //reachableFrom(r, p_lu, s);
+    //p_rd = {x: (pos.x+1), y: (pos.y+1)};
+    //reachableFrom(r, p_rd, s);
+    //p_ld = {x: (pos.x-1), y: (pos.y+1)};
+    //reachableFrom(r, p_ld, s);
   }
 }
 
@@ -55,22 +64,28 @@ function mark(r, mark) {
   }
 }
 
-var r = [];
+var r = []; //reachable region
+var s = 0; //number of steps
 
 function drag(ev) {
-  console.log("start draging");
+  if ( s == 0 ) {
+    return;
+  }
   ev.dataTransfer.setData("text", ev.target.id);
   var x_current = $(ev.target).closest("#div1").attr("x");
   var y_current = $(ev.target).closest("#div1").attr("y");
   $('#console').prepend("<span> from x:"+ x_current +" y:" + y_current + "</span>");
   // Run the reach algorithm here and mark all reachable field
   var pos = {x: parseInt(x_current), y: parseInt(y_current)};
-  reachableFrom(r, pos, 3);
-  console.log(r);
+  reachableFrom(r, pos, s+1); // s+1 because field on which the unit is standing is also counted
+  //console.log(r);
   mark(r, "active");
 }
 
 function drop(ev) {
+  if ( s == 0 ) {
+    return;
+  }
   var x = $(ev.target).attr("x");
   var y = $(ev.target).attr("y");
   ev.preventDefault();
@@ -83,13 +98,15 @@ function drop(ev) {
   }
   mark(r, "");
   r.length = 0; //clear out the reachable fields when move is finished
+  s = 0; //all steps are used
 }
 
 $(document).ready(function(){
   $(".roll_dice").on("click", function(){
     if($(this).attr("active") == "yes"){
       $(this).attr("active", "no");
-      $(".roll span").html("You rolled: " + roll(6));
+      s = roll(6);
+      $(".roll span").html("You rolled: " + s);
     }
   });
 });
