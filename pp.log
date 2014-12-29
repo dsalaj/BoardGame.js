@@ -4,6 +4,11 @@ TODO
 +dice throw sim
 +reach algorithm (expand, mark, store for check)
 +reach with obstacle skip
+----------------------------
+-  Complete Redesign of UI using JQueryUI
+----------------------------
+-don't reset s for next roll timeout
+-implement not droppable on in dependancy of tile type
 -don't waste move/steps if not possible to drop
 -externalize configuration (separate js file?)
 -basic player simulation / idea

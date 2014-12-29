@@ -57,14 +57,14 @@ function reachableFrom(r, pos, steps) {
     p_d = {x: pos.x, y: (pos.y+1)};
     reachableFrom(r, p_d, s);
 
-    //p_ru = {x: (pos.x+1), y: (pos.y-1)};
-    //reachableFrom(r, p_ru, s);
-    //p_lu = {x: (pos.x-1), y: (pos.y-1)};
-    //reachableFrom(r, p_lu, s);
-    //p_rd = {x: (pos.x+1), y: (pos.y+1)};
-    //reachableFrom(r, p_rd, s);
-    //p_ld = {x: (pos.x-1), y: (pos.y+1)};
-    //reachableFrom(r, p_ld, s);
+    p_ru = {x: (pos.x+1), y: (pos.y-1)};
+    reachableFrom(r, p_ru, s);
+    p_lu = {x: (pos.x-1), y: (pos.y-1)};
+    reachableFrom(r, p_lu, s);
+    p_rd = {x: (pos.x+1), y: (pos.y+1)};
+    reachableFrom(r, p_rd, s);
+    p_ld = {x: (pos.x-1), y: (pos.y+1)};
+    reachableFrom(r, p_ld, s);
   }
 }
 
