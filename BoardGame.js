@@ -7,39 +7,39 @@ var MAX_TURN = 5;
 var r = []; //reachable region
 var s = 0; //number of steps
 
-function drag(ev) {
-  if ( s == 0 ) {
-    return;
-  }
-  ev.dataTransfer.setData("text", ev.target.id);
-  var x_current = $(ev.target).closest(TILE).attr("x");
-  var y_current = $(ev.target).closest(TILE).attr("y");
-  $('#console').prepend("<span> from x:"+ x_current +" y:" + y_current + "</span>");
-  // Run the reach algorithm here and mark all reachable field
-  var pos = {x: parseInt(x_current), y: parseInt(y_current)};
-  reachableFrom(r, pos, s+1); // s+1 because field on which the unit is standing is also counted
-  //console.log(r);
-  mark(r, "active");
-}
-
-function drop(ev) {
-  if ( s == 0 ) {
-    return;
-  }
-  var x = $(ev.target).attr("x");
-  var y = $(ev.target).attr("y");
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  if (x == 5) {
-    $('#console').prepend("<span>FORBIDDEN ROW 5</span></br>");
-  } else {
-    ev.target.appendChild(document.getElementById(data));
-    $('#console').prepend("<span>" + data + " moved to x:"+ x +" y:" + y + "</span>");
-  }
-  mark(r, "");
-  r.length = 0; //clear out the reachable fields when move is finished
-  s = 0; //all steps are used
-}
+//function drag(ev) {
+//  if ( s == 0 ) {
+//    return;
+//  }
+//  ev.dataTransfer.setData("text", ev.target.id);
+//  var x_current = $(ev.target).closest(TILE).attr("x");
+//  var y_current = $(ev.target).closest(TILE).attr("y");
+//  $('#console').prepend("<span> from x:"+ x_current +" y:" + y_current + "</span>");
+//  // Run the reach algorithm here and mark all reachable field
+//  var pos = {x: parseInt(x_current), y: parseInt(y_current)};
+//  reachableFrom(r, pos, s+1); // s+1 because field on which the unit is standing is also counted
+//  //console.log(r);
+//  mark(r, "active");
+//}
+//
+//function drop(ev) {
+//  if ( s == 0 ) {
+//    return;
+//  }
+//  var x = $(ev.target).attr("x");
+//  var y = $(ev.target).attr("y");
+//  ev.preventDefault();
+//  var data = ev.dataTransfer.getData("text");
+//  if (x == 5) {
+//    $('#console').prepend("<span>FORBIDDEN ROW 5</span></br>");
+//  } else {
+//    ev.target.appendChild(document.getElementById(data));
+//    $('#console').prepend("<span>" + data + " moved to x:"+ x +" y:" + y + "</span>");
+//  }
+//  mark(r, "");
+//  r.length = 0; //clear out the reachable fields when move is finished
+//  s = 0; //all steps are used
+//}
 
 $(document).ready(function(){
   //var f = $('<div id="div1" tile="g" ondrop="drop(event)" ondragover="allowDrop(event)"></div>');
@@ -51,6 +51,7 @@ $(document).ready(function(){
       }
   }
 
+  //TODO: set only reachable tiles as droppable
   $('div', '#pfield').each(function() {
     var $div = $(this);
     $div.droppable({
@@ -96,6 +97,7 @@ $(document).ready(function(){
   t1.append(u1); //put unit on the tile
   u1.css({ top: t1.offset().top, left: t1.offset().left }); //snap to tile
   u1.draggable({
+    revert: "invalid", //move back to previous position if dropped outside of board
     start: function(ev, ui) {
       if ( s == 0 ) {
         return;
