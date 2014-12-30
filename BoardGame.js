@@ -97,6 +97,7 @@ $(document).ready(function(){
   t1.append(u1); //put unit on the tile
   u1.css({ top: t1.offset().top, left: t1.offset().left }); //snap to tile
   u1.draggable({
+    containment: $(BOARD),
     revert: "invalid", //move back to previous position if dropped outside of board
     start: function(ev, ui) {
       if ( s == 0 ) {
