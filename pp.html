@@ -10,19 +10,47 @@
   <title>BoardGame.js demo</title>
 </head>
 <body>
-  <div id="pfield"></div>
+  <div class='left'>
+    <div id="pfield"></div>
+  </div>
   <div class='right'>
-    <div id="dice">
-      <div class='turn'><div id="turn_time_bar"><span></span></div></div>
-      <div class='btn roll_dice' active='no'>Roll</div>
-      <div class='roll'><span></span></div>
+    <div id="tabs">
+      <ul>
+        <li><a href="#t-1"><span>Stats</span></a></li>
+        <li><a href="#t-2"><span>Inventory</span></a></li>
+        <li><a href="#t-3"><span>Three</span></a></li>
+      </ul>
+    <div id="t-1">
+      <div class="tab">
+        <div class="t-block" id="dice">
+          <div class='turn'><span>Next turn in ?</span><div id="turn_time_bar"></div></div>
+          <div class='btn roll_dice' active='no'>Roll</div>
+          <div class='roll'><span></span></div>
+        </div>
+        <div class="t-block" id="stats">
+          <h2>Status:</h2>
+          <div id="health"><span>Health:</span><div id="health_bar"></div></div>
+          <div id="mana"><span>Mana:</span><div id="mana_bar"></div></div>
+        </div>
+        <div class="t-block" id="console"></div>
+      </div>
     </div>
-    <div id="console"></div>
+    <div class="tab" id="t-2">
+    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+    </div>
+    <div class="tab" id="t-3">
+    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+    </div>
+    </div>
   </div>
 <script>
-$( "#turn_time_bar" ).progressbar({
-value: 37
-});
+$( "#tabs" ).tabs();
+$( "#turn_time_bar" ).progressbar({});
+$( "#health_bar" ).progressbar({ value: 84});
+$( "#mana_bar" ).progressbar({ value: 42});
 </script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 
 var BOARD = '#pfield';
+var MAX_TURN = 15;
 
 $(document).ready(function(){
   var f = $('<div id="div1" tile="g" ondrop="drop(event)" ondragover="allowDrop(event)"></div>');
@@ -26,12 +27,13 @@ $(document).ready(function(){
   $(BOARD).children('#div1').first().append(u1);
   $(BOARD).children('#div1').last().prev().append(u2);
 
-  var sec = 5;
+  var sec = MAX_TURN;
   setInterval( function(){
     if(sec == 0) {
-      sec = 5;
+      sec = MAX_TURN;
       $(".roll_dice").attr("active", "yes");
     }
+    $( "#turn_time_bar" ).progressbar({ value: (1 - sec / (MAX_TURN+1))*100 });
     $(".turn span").html("Next turn in " + sec--);
   }, 1000);
 
