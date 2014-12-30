@@ -1,5 +1,5 @@
-BoardGame.js
-============
+# BoardGame.js
 
-=Dependencies
--JQuery
+## Dependencies
+- JQuery
+- JQueryUI

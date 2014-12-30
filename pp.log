@@ -5,7 +5,10 @@ TODO
 +reach algorithm (expand, mark, store for check)
 +reach with obstacle skip
 ----------------------------
--  Complete Redesign of UI using JQueryUI
+- Complete Redesign of UI using JQueryUI
+  -finish rewriting old drop function
+  -allow droping only on reachable tiles
+  -fixed sized window scrollable playing field
 ----------------------------
 -don't reset s for next roll timeout
 -implement not droppable on in dependancy of tile type

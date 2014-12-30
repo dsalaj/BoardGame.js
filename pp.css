@@ -1,10 +1,21 @@
-#div1 {float:left; width:18px; height:18px;padding:10px;border:1px solid #5C4310;}
-#div1[tile="g"] {background: url("tilea2.png") 0 0;}
-#div1[tile="p"] {background: url("tilea2.png") -155px 0;}
-#drag1 {width:18px; height:18px; background:#d88;}
+#div1 {float:left; width:48px; height:48px;padding:10px;border:1px solid #5C4310;}
+#pfield #tile { border: 1px solid #ccc; width: 48px; height: 48px;}
+#tile[tile="g"] {background: url("tilea2.png") 0 0;}
+#tile[tile="p"] {background: url("tilea2.png") -155px 0;}
+
+#drag1 {
+    width: 100%;
+    height: 50px;
+    background: green;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 #drag2 {width:18px; height:18px; background:#88d;}
 body { display:flex; flex-direction:row; justify-content:space-around;}
-#pfield { width:100%; order:1; }
+#pfield { width:100%; height:600px; border: 1px solid #999; order:1; overflow:scroll; }
+#pfield div { width: 50px; height: 50px; float: left;}
+
 .left { order:1; width:64%; }
 .right { display:flex; order:2;  width:34%; flex-direction:column;}
 #tabs { width:100%;}

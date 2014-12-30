@@ -1,9 +1,49 @@
 
 var BOARD = '#pfield';
-var MAX_TURN = 15;
+var TILE_ = 'tile';
+var TILE = '#'+TILE_;
+var MAX_TURN = 5;
+
+var r = []; //reachable region
+var s = 0; //number of steps
+
+function drag(ev) {
+  if ( s == 0 ) {
+    return;
+  }
+  ev.dataTransfer.setData("text", ev.target.id);
+  var x_current = $(ev.target).closest(TILE).attr("x");
+  var y_current = $(ev.target).closest(TILE).attr("y");
+  $('#console').prepend("<span> from x:"+ x_current +" y:" + y_current + "</span>");
+  // Run the reach algorithm here and mark all reachable field
+  var pos = {x: parseInt(x_current), y: parseInt(y_current)};
+  reachableFrom(r, pos, s+1); // s+1 because field on which the unit is standing is also counted
+  //console.log(r);
+  mark(r, "active");
+}
+
+function drop(ev) {
+  if ( s == 0 ) {
+    return;
+  }
+  var x = $(ev.target).attr("x");
+  var y = $(ev.target).attr("y");
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  if (x == 5) {
+    $('#console').prepend("<span>FORBIDDEN ROW 5</span></br>");
+  } else {
+    ev.target.appendChild(document.getElementById(data));
+    $('#console').prepend("<span>" + data + " moved to x:"+ x +" y:" + y + "</span>");
+  }
+  mark(r, "");
+  r.length = 0; //clear out the reachable fields when move is finished
+  s = 0; //all steps are used
+}
 
 $(document).ready(function(){
-  var f = $('<div id="div1" tile="g" ondrop="drop(event)" ondragover="allowDrop(event)"></div>');
+  //var f = $('<div id="div1" tile="g" ondrop="drop(event)" ondragover="allowDrop(event)"></div>');
+  var f = $('<div id="'+TILE_+'" tile="g"></div>');
   
   for(i = 0; i < 14; i++) {
       for(j = 0; j < 14; j++) {
@@ -11,21 +51,66 @@ $(document).ready(function(){
       }
   }
 
-  // test map
-  $("#div1[x='5'][y='0']").attr("tile", "p");
-  $("#div1[x='5'][y='1']").attr("tile", "p");
-  $("#div1[x='5'][y='2']").attr("tile", "p");
-  $("#div1[x='5'][y='0']").attr("tile", "p");
-  $("#div1[x='5'][y='4']").attr("tile", "p");
-  $("#div1[x='4'][y='4']").attr("tile", "p");
-  $("#div1[x='3'][y='4']").attr("tile", "p");
-  $("#div1[x='3'][y='5']").attr("tile", "p");
-  $("#div1[x='5'][y='5']").attr("tile", "p");
+  $('div', '#pfield').each(function() {
+    var $div = $(this);
+    $div.droppable({
+      drop: function(ev, ui) {
+        $('#drag1').
+        css({ top: $div.offset().top, left: $div.offset().left });
+        //TODO: Rewrite the old drop function
+        if ( s == 0 ) {
+          return;
+        }
+        var x = $(ev.target).attr("x");
+        var y = $(ev.target).attr("y");
+        $('#console').prepend("<span> moved to x:"+ x +" y:" + y + "</span>");
+        //ev.preventDefault();
+        ////var data = ev.dataTransfer.getData("text");
+        //var data = ui.helper;
+        //if (x == 5) {
+        //  $('#console').prepend("<span>FORBIDDEN ROW 5</span></br>");
+        //} else {
+        //  ev.target.appendChild(document.getElementById(data));
+        //  $('#console').prepend("<span>" + data + " moved to x:"+ x +" y:" + y + "</span>");
+        //}
+        //mark(r, "");
+        //r.length = 0; //clear out the reachable fields when move is finished
+        //s = 0; //all steps are used
+      }
+    });
+  });
 
-  var u1 = $('<div draggable="true" ondragstart="drag(event)" id="drag1"></div>');
-  var u2 = $('<div draggable="true" ondragstart="drag(event)" id="drag2"></div>');
-  $(BOARD).children('#div1').first().append(u1);
-  $(BOARD).children('#div1').last().prev().append(u2);
+  // test map
+  $("#tile[x='5'][y='0']").attr("tile", "p");
+  $("#tile[x='5'][y='1']").attr("tile", "p");
+  $("#tile[x='5'][y='2']").attr("tile", "p");
+  $("#tile[x='5'][y='0']").attr("tile", "p");
+  $("#tile[x='5'][y='4']").attr("tile", "p");
+  $("#tile[x='4'][y='4']").attr("tile", "p");
+  $("#tile[x='3'][y='4']").attr("tile", "p");
+  $("#tile[x='3'][y='5']").attr("tile", "p");
+  $("#tile[x='5'][y='5']").attr("tile", "p");
+
+  var u1 = $('<div id="drag1"></div>'); //first movable unit
+  var t1 = $(BOARD).children(TILE).first(); //first tile on the board
+  t1.append(u1); //put unit on the tile
+  u1.css({ top: t1.offset().top, left: t1.offset().left }); //snap to tile
+  u1.draggable({
+    start: function(ev, ui) {
+      if ( s == 0 ) {
+        return;
+      }
+      // FIXME: check the code under
+      var x_current = $(ev.target).closest(TILE).attr("x");
+      var y_current = $(ev.target).closest(TILE).attr("y");
+      $('#console').prepend("<span> from x:"+ x_current +" y:" + y_current + "</span>");
+      // Run the reach algorithm here and mark all reachable field
+      var pos = {x: parseInt(x_current), y: parseInt(y_current)};
+      reachableFrom(r, pos, s+1); // s+1 because field on which the unit is standing is also counted
+      //console.log(r);
+      mark(r, "active");
+    }
+  });
 
   var sec = MAX_TURN;
   setInterval( function(){
@@ -39,9 +124,9 @@ $(document).ready(function(){
 
 });
 
-function allowDrop(ev) {
-  ev.preventDefault();
-}
+//function allowDrop(ev) {
+//  ev.preventDefault();
+//}
 
 function reachableFrom(r, pos, steps) {
   if (!($("div[x='"+pos.x+"'][ y='"+pos.y+"']").attr("tile")=="g")) return;
@@ -74,43 +159,6 @@ function mark(r, mark) {
   for (var i = 0; i < r.length; i++) {
     $( "div[x='"+r[i].x+"'][ y='"+r[i].y+"']" ).attr("class", mark);
   }
-}
-
-var r = []; //reachable region
-var s = 0; //number of steps
-
-function drag(ev) {
-  if ( s == 0 ) {
-    return;
-  }
-  ev.dataTransfer.setData("text", ev.target.id);
-  var x_current = $(ev.target).closest("#div1").attr("x");
-  var y_current = $(ev.target).closest("#div1").attr("y");
-  $('#console').prepend("<span> from x:"+ x_current +" y:" + y_current + "</span>");
-  // Run the reach algorithm here and mark all reachable field
-  var pos = {x: parseInt(x_current), y: parseInt(y_current)};
-  reachableFrom(r, pos, s+1); // s+1 because field on which the unit is standing is also counted
-  //console.log(r);
-  mark(r, "active");
-}
-
-function drop(ev) {
-  if ( s == 0 ) {
-    return;
-  }
-  var x = $(ev.target).attr("x");
-  var y = $(ev.target).attr("y");
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  if (x == 5) {
-    $('#console').prepend("<span>FORBIDDEN ROW 5</span></br>");
-  } else {
-    ev.target.appendChild(document.getElementById(data));
-    $('#console').prepend("<span>" + data + " moved to x:"+ x +" y:" + y + "</span>");
-  }
-  mark(r, "");
-  r.length = 0; //clear out the reachable fields when move is finished
-  s = 0; //all steps are used
 }
 
 $(document).ready(function(){
