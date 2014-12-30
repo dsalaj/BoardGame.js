@@ -13,11 +13,16 @@
   <div id="pfield"></div>
   <div class='right'>
     <div id="dice">
-      <div class='turn'><span></span></div>
+      <div class='turn'><div id="turn_time_bar"><span></span></div></div>
       <div class='btn roll_dice' active='no'>Roll</div>
       <div class='roll'><span></span></div>
     </div>
     <div id="console"></div>
   </div>
+<script>
+$( "#turn_time_bar" ).progressbar({
+value: 37
+});
+</script>
 </body>
 </html>
