@@ -45,8 +45,8 @@ $(document).ready(function(){
   //var f = $('<div id="div1" tile="g" ondrop="drop(event)" ondragover="allowDrop(event)"></div>');
   var f = $('<div id="'+TILE_+'" tile="g"></div>');
   
-  for(i = 0; i < 14; i++) {
-      for(j = 0; j < 14; j++) {
+  for(i = 0; i < 28; i++) {
+      for(j = 0; j < 28; j++) {
           $(BOARD).append(f.clone().attr("y",i).attr("x",j));
       }
   }
@@ -57,7 +57,7 @@ $(document).ready(function(){
     $div.droppable({
       drop: function(ev, ui) {
         $('#drag1').
-        css({ top: $div.offset().top, left: $div.offset().left });
+        css({ top: ($div.offset().top - 10), left: ($div.offset().left - 16) });
         //TODO: Rewrite the old drop function
         if ( s == 0 ) {
           return;
@@ -95,9 +95,11 @@ $(document).ready(function(){
   var u1 = $('<div id="drag1"></div>'); //first movable unit
   var t1 = $(BOARD).children(TILE).first(); //first tile on the board
   t1.append(u1); //put unit on the tile
-  u1.css({ top: t1.offset().top, left: t1.offset().left }); //snap to tile
+  u1.css({ top: (t1.offset().top - 10), left: (t1.offset().left - 16) }); //snap to tile
+
   u1.draggable({
-    containment: $(BOARD),
+    //FIXME: can not drop on fields outside of inital map view (when scrolled)
+    containment: $('.left'),
     revert: "invalid", //move back to previous position if dropped outside of board
     start: function(ev, ui) {
       if ( s == 0 ) {

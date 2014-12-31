@@ -8,12 +8,12 @@ TODO
 - Complete Redesign of UI using JQueryUI
   -finish rewriting old drop function
   -allow droping only on reachable tiles
-  -fixed sized window scrollable playing field
+  +fixed sized window scrollable playing field
 ----------------------------
+-map loading from file
 -don't reset s for next roll timeout
 -implement not droppable on in dependancy of tile type
 -don't waste move/steps if not possible to drop
 -externalize configuration (separate js file?)
 -basic player simulation / idea
--map loading from file
 
